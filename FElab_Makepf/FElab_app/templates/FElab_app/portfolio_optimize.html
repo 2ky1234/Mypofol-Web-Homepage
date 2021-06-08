@@ -1,0 +1,166 @@
+﻿
+{% extends 'FElab_app/base.html' %}
+
+{% block content %}
+{% load static %}
+<head>
+    <script type='text/javascript' src="{% static 'js/portfolio_optimize.js' %}"></script>
+</head>
+<div class='h_container'>
+    <div class="h_container__title">
+        <span class='highlight_text'>포트폴리오 이론</span>은 해리 마코위츠(Harry Max Markowitz)에 의해 체계화된 이론으로, 자산을 분산투자하여 포트폴리오를 만들게 되면 분산투자 전보다 위험을 감소시킬 수 있다는 이론입니다.
+        투자자산의 가치는 그 투자로부터 기대되는 수익률이 클수록 커지며, 반면에 위험이 클수록 작아집니다. 지배 원리란 같은 위험 하에서는 기대 수익률이 높은 것이, 같은 기대수익률 하에서는 위험이 작은 것이 그렇지 않은 투자대상을 지배한다는 것입니다. 이 지배원리에 입각하여 선택되는 투자안이 <span class='highlight_text'>효율적 투자대상</span>이 됩니다.
+    </div>
+</div>
+<div class='b_container'>
+    <section class='b_container__content bcgray'>
+        <div class='b_container__content_header' style="height:500px;">
+            <h2 class="topicTitle">투자하고 있는 자산 입력하기</h2>
+            <p style='color:#cccccc;'>투자를 하고 있지 않아도 투자하고 싶은 종목이나 자산을 입력하시면 됩니다.</p>
+            <br>
+            <div style='text-align:center;'>
+                <button id='register_pf' style='font-size:15px;'>Register</button>
+            </div>
+        </div>
+        <div class="b_container__content_body">
+        </div>
+    </section>
+    <section class='b_container__content'>
+        <div class="b_container__content_body">
+            <section class='lecture'>
+                <article class='lecture_image' style='width:50%;'>
+                    <img src='/static/images/diversification1.jpg' style='width:100%; height: 100%;'>
+                </article>
+                <article class='lecture_comment' style='width:50%;'>
+                    <div class='lecture_commet_title'>
+                        <h2>분산투자, 알고계셨나요?</h2>
+                    </div>
+                    <div class='lecture_commet_content'>
+                        <p>'계란을 한 바군니에 담지 말라' 라는 말을 들어보셨을 겁니다. 각 자산은 투자에 따른 위험도가 각기 다르기 때문에 위험을 분산시키기 위해 다양한 자산으로 포트폴리오를 구성하는 것을 의미합니다. 
+                        </p>
+                    </div>
+                    
+                </article>
+            </section>
+        </div>
+    </section>
+</div>
+<div>
+    <div class="modal-mask modal-register_pf" style='font-family: AppleSDGothicNeoM;'>
+        <div class="modal-wrapper">
+            <div class="modal-container">
+                <div>
+                    <div class="modal-header">
+                        <h2>포트폴리오 등록</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/portfolio_optimize_result/" method="POST" id="modal_form">
+                            {% csrf_token %}
+                            <div class="row-mypage">
+                                <div class="col-label">
+                                    <div class="form-label">투자하고 있는/싶은 자산</div>
+                                </div>
+                                <div class="col-field">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name='investment_kind' type="checkbox" id="korea_stock" value="korea_stock">
+                                        <label class="form-check-label">국내 주식</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name='investment_kind' type="checkbox" id="abroad_stock" value="abroad_stock">
+                                    <label class="form-check-label" >해외 주식</label> 
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name='investment_kind' type="checkbox" id="korea_ETF" value="korea_ETF">
+                                    <label class="form-check-label" >국내 ETF</label> 
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name='investment_kind' type="checkbox" id="bond" value="bond">
+                                    <label class="form-check-label" >채권</label> 
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name='investment_kind' type="checkbox" id="option" value="option">
+                                    <label class="form-check-label" >파생상품</label> 
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name='investment_kind' type="checkbox" id="commodity" value="commodity">
+                                    <label class="form-check-label" >예금</label> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-mypage">
+                                <div class="col-label">
+                                    <div class="form-label">*투자기간을 입력하여 주세요</div>
+                                </div>
+                                <div class='col-field'>
+                                    <label for="from">시작</label>
+                                    <input type="text" class="input_date" id="my_from" name="my_from" autocomplete="off" value='01/01/2019'>
+                                    <label for="to">종료</label>
+                                    <input type="text" class="input_date" id="my_to" name="my_to" autocomplete="off" value='01/01/2021'>
+                                </div>
+                            </div>
+                            <div class="row-mypage">
+                                <div class="col-label">
+                                    <div class="form-label">*투자하고 계신 종목을 입력해주세요</div>
+                                </div>
+                                <div class='col-field'>
+                                    <input id="my_comboBox" onfocus="if(this.value == '종목 검색') { this.value = ''; }" value="종목 검색" />
+                                    <input type='button' id="my_putin_btn" style="width:60px;background-color:#FA8800;height:40px;border:none;color:white;" value='담기'></button>
+                                </div>
+                            </div>
+                            <div class="row-mypage">
+                                <div class="col-label">
+                                    <div class="form-label">담긴 자산</div><span>비중은 0부터 1사이로 입력하여 주세요</span>
+                                </div>
+                                <div id="my_assetsBox">
+                                    <table class='table backtest_table'>
+                                        <thead>
+                                            <tr>
+                                                <th class='numberCell'>자산</th>
+                                                <th class='numberCell'>비중</th>
+                                                <th class='numberCell'></th>
+                                                <th class='numberCell'></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id='asset_row'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="modal-button">
+                        <button type='button' id='optimize_btn' class="btn">등록 및 최적화</button>
+                    </div>
+                </form>
+                    <button class="modal-close"><image src="/static/images/close.png" width="20"></image></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<div class="popup" data-popup="showSise"> <!-- 표출되는 팝업 입니다. --> 
+    <div class="popup-inner"> 
+        <div class="contentsBox" style="height: 500px;cursor:default;border:none;">
+            <div id="controls" style="width: 100%; overflow: hidden;">
+                <div style="float: left; margin-left: 15px;">
+                    From: <input type="text" id="fromfield" class="amcharts-input" />
+                    To: <input type="text" id="tofield" class="amcharts-input" />
+                </div>
+                <div style="float: right; margin-right: 15px;">
+                    <button id="b1m" class="amcharts-input">1m</button>
+                    <button id="b3m" class="amcharts-input">3m</button>
+                    <button id="b6m" class="amcharts-input">6m</button>
+                    <button id="b1y" class="amcharts-input">1y</button>
+                    <button id="bytd" class="amcharts-input">YTD</button>
+                    <button id="bmax" class="amcharts-input">MAX</button>
+                </div>
+            </div>
+            <div id="chartdiv"></div>
+        </div>
+        <div class="popup-contents"> 
+            <a class="popup-close" data-popup-close="showSise" href="#">X</a> <!-- 팝업 닫기 버튼입니다 -->
+        </div>
+    </div> 
+</div>
+{% endblock %}

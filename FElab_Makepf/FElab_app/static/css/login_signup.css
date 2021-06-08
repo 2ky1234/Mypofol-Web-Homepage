@@ -1,0 +1,22 @@
+.form_wrap{
+    width: 700px;
+    max-width: 800px;
+    margin: 50 400px;
+    font-family: 'AppleSDGothicNeoM';
+}
+input:disabled{
+    background: #ccc;
+}
+input[type='checkbox']{
+    width:20px;
+    margin:0;
+    height: 20px;
+}
+#comboBox {
+    width:80%;
+    margin:0;
+    background-color: #eeeeee;
+}
+.searchBox{
+    margin:0;
+}

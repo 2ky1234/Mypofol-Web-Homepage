@@ -1,0 +1,184 @@
+{% extends 'FElab_app/base.html' %}
+
+{% block content %}
+{% load static %}
+<input type="hidden" value= '{{ data }}' id='any'/>
+<head>
+    <script type='text/javascript' src="{% static 'js/portfolio_optimize_result.js' %}"></script>
+</head>
+<div class='h_container'>
+    <div class="h_container__title">
+        <span class='highlight_text'>포트폴리오 이론</span>은 해리 마코위츠(Harry Max Markowitz)에 의해 체계화된 이론으로, 자산을 분산투자하여 포트폴리오를 만들게 되면 분산투자 전보다 위험을 감소시킬 수 있다는 이론입니다.
+        투자자산의 가치는 그 투자로부터 기대되는 수익률이 클수록 커지며, 반면에 위험이 클수록 작아집니다. 지배 원리란 같은 위험 하에서는 기대 수익률이 높은 것이, 같은 기대수익률 하에서는 위험이 작은 것이 그렇지 않은 투자대상을 지배한다는 것입니다. 이 지배원리에 입각하여 선택되는 투자안이 <span class='highlight_text'>효율적 투자대상</span>이 됩니다.
+    </div>
+</div>
+<div class='b_container'>
+    <section class='b_container__content bcgray'>
+        <div class='b_container__content_header'  style='margin-bottom: 0;'>
+            <h2 class="topicTitle">내 포트폴리오</h2><br>
+        </div>
+        <div class="b_container__content_body">
+            <div class="portfolio_pie">
+                <canvas id="portfolio_pie_chart" height='300' width='300'></canvas>
+            </div>
+            <div style='display:flex; justify-content: center;'>
+                <h2 class="topicTitle" style="font-size: 20px;">평균 수익률</h2>
+                <h2 class="topicTitle" id="user_ret" style="font-size: 20px;padding:0 20px;color: #06c;"></h2>
+                <h2 class="topicTitle" style="font-size: 20px;">표준 편차 </h2>
+                <h2 class="topicTitle" id="user_vol" style="font-size: 20px;padding:0 20px;color: #06c;"></h2>
+            </div>
+            <div class='portfolio_table' style='width:50%;margin:50px auto;'>
+                <table class='table optimize_table'>
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">자산 배분</th>
+                            <th class='numberCell'>Allocation</th>
+                        </tr>
+                    </thead>
+                    <tbody id='opt_report_table'>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class='b_container__content'>
+        <div class='portfolio_optimize'>
+            <article class='main' style='overflow:hidden;text-align: center;'>
+                <h2 class="topicTitle">효율적 투자선</h2><br>
+                <p>효율적인 투자자는 같은 수익을 내는 자산이 있다면 더 낮은 위험도를 선호할 것이고, 같은 위험도를 가진 자신이 있다면 수익률이 더 높은 자산을 선호할 것입니다. 내가 가진 자산들을 어떻게 배분하느냐에 따라 수익률도 달라지고 위험도(분산)도 달라지는데 이 때 가장 효율적으로 배분하는 포트폴리오 점들을 따라 그린 선이 효율적 투자선입니다.</p>
+
+            </article>
+        </div>
+        <div class="b_container__content_body">
+            <div class="optimize_result" id='optimize_result' style='margin-top:0;'>
+                <div id='ef_graph'>
+                    <div class="contentsBox" style="height: 500px;cursor:default;">
+                    <canvas id='efficient_frontier_graph' style="width: 100%;height: 100%;"></canvas>
+                    </div>
+                    <div>
+                        <p style='color:#cccccc;'>좌표 위에 커서를 올리시면 배분 비중과 수익률, 표준편차를 확인할 수 있습니다. 표준편차는 변동하는 정도(리스크)를 나타냅니다.</p>
+                    </div>
+                </div>
+                <div id='ef_comment'>
+                    <div class="strategy_container">
+                        <div class='strategy_title' style='padding-top: 20px;'>
+                            <h2 id='gmv_title' style='margin-top:0'>Global Minimum Variance</h2>
+                        </div>
+                        <div class='strategy_comment'>
+                            <span>GMV(전역 최소 분산) 포트폴리오는 투자자의 위험 성향이 아주 강한 경우의 포트폴리오입니다. 이러한 상황에서 투자자는 수익의 최대화보다 위험의 최소화를 우선순위로 두게 되며, 이에 따라 최적화 프로세스는 가장 낮은 변동성의 포트폴리오를 구성할 수 있도록 가중치의 해를 찾습니다.</span>
+                        </div>
+                    </div>
+                    <div class="strategy_container">
+                        <div class='strategy_title' style='padding-top: 20px;'>
+                            <h2 id='ms_title' style='margin-top:0'>Maximum Sharpe Ratio</h2>
+                        </div>
+                        <div class='strategy_comment'>
+                            <span>샤프지수는 감수한 위험 대비 달성 하게 되는 수익이 어느정도나 되는 가를 평가할 때 쓰이는 지수입니다. 즉 위험 자산에 투자함으로써 얻은 초과 수익의 정도를 나타내는 지표입니다. 샤프 지수가 높을수록 안전하게 투자했지만 그에 비해 수익률은 높게 나왔다는 뜻입니다. 이러한 샤프 지수를 최대화한 포트폴리오가 Maximum Sharpe Ratio Portfolio 입니다.</span>
+                        </div>
+                    </div>
+                    <div class="strategy_container">
+                        <div class='strategy_title' style='padding-top: 20px;'>
+                            <h2 id='rp_title' style='margin-top:0'>Risk Parity Portfolio</h2>
+                        </div>
+                        <div class='strategy_comment'>
+                            <span>리스크 패리티 전략은 개별자산의 수익률 변동이 포트폴리오 전체 위험에 기여하는 정도를 동일하도록 구성해서 포트폴리오 전체 위험이 특정 자산의 가격 변동에 과도하게 노출되는 것을 피하기 위한 자산배분전략입니다.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class='b_container__content bcgray'>
+        <div id='button_container'>
+            <div style='border-right:1px solid #cccccc; width:50%;'>
+                <h3 class='topicTitle' style='text-align: center;height:50px;'>새로운 자산을 추가하여 포트폴리오를 재구성합니다.</h3>
+                <div style='display:flex;justify-content: center;margin:20px 0;'>
+                    <button id='add_asset_btn' style="margin:0 auto">자산 추가하기</button>
+                </div>
+            </div>
+            <div style='width:50%;'>
+                <h3 class='topicTitle' style='text-align: center;height:50px;'>내 포트폴리오가 과거 기간 어느 정도의 성과를 냈는지 백테스트를 진행합니다.</h3>
+                <div style='display:flex;justify-content: center;margin:20px 0;'>
+                    <button onclick="tobacktest()" id="tobacktest_btn">백테스트 하기</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<div id='add_block' style='margin:150px 0 50px;'>
+    <section class='content'>
+        <div class='wrap'>
+            <section class='portfolio_optimize'  style='margin-bottom:40px;'>
+                <article class='main' style='overflow:hidden;text-align: center;'>
+                    <h2 class="topicTitle">자산 추가하기</h2><br>
+                    <span style='font-size: 15px;font-family: AppleSDGothicNeoM;'>내가 구성한 포트폴리오에 새로운 자산을 추가했을때 효율적 투자선이 어떻게 변하는지 확인할 수 있습니다.</span>
+                </article>
+            </section>
+        </div>
+    </section>
+    <div class='optimize_result'>
+        <div class='left_block'>
+            <div style='margin: 20px 0;display:flex;justify-content: center;'>
+                <div class="searchBox">
+                    <input id="comboBox" onfocus="if(this.value == '종목 검색') { this.value = ''; }" value="종목 검색" />
+                    <input type='button' id="putin_btn" style="width:80px;background-color:#FA8800;height:40px;border:none;color:white;" value='담기'></button>
+                </div>
+            </div>
+            <div class='added_assetsBox' style='margin: 20px;height:270px; overflow-y: auto;overflow-x: hidden;'>
+                <table class='table backtest_table'>
+                    <thead>
+                        <tr>
+                            <th class='numberCell'>자산</th>
+                            <th class='numberCell'>비중</th>
+                            <th class='numberCell'></th>
+                            <th class='numberCell'></th>
+                        </tr>
+                    </thead>
+                    <tbody id='adjusted_asset_row'>
+                    </tbody>
+                </table>
+            </div>
+            <div style='display:flex;justify-content: center;'>
+                <button id='change_btn' style="width:40%;background-color:#00469d;height:50px;border:none;color:white;margin-right:10px;">반영하기</button>
+                <button id='ad_tobacktest_btn' onclick="ad_tobacktest()" style="width:40%;background-color:white;height:50px;border:1px solid#cccccc;color:#00469d;">백테스트 하기</button>
+            </div>
+        </div>
+        <div class='right_block'>
+            <div class="contentsBox" style="height: 400px;cursor:default;margin-top:20px">
+                <canvas id='after_efficient_frontier_graph' style="width: 100%;height: 100%;border:1px solid #cccccc"></canvas>
+             </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+</footer>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<div class="popup" data-popup="showSise"> <!-- 표출되는 팝업 입니다. --> 
+    <div class="popup-inner"> 
+        <div class="contentsBox" style="height: 500px;cursor:default;border:none;">
+            <div id="controls" style="width: 100%; overflow: hidden;">
+                <div style="float: left; margin-left: 15px;">
+                    From: <input type="text" id="fromfield" class="amcharts-input" />
+                    To: <input type="text" id="tofield" class="amcharts-input" />
+                </div>
+                <div style="float: right; margin-right: 15px;">
+                    <button id="b1m" class="amcharts-input">1m</button>
+                    <button id="b3m" class="amcharts-input">3m</button>
+                    <button id="b6m" class="amcharts-input">6m</button>
+                    <button id="b1y" class="amcharts-input">1y</button>
+                    <button id="bytd" class="amcharts-input">YTD</button>
+                    <button id="bmax" class="amcharts-input">MAX</button>
+                </div>
+            </div>
+            <div id="chartdiv"></div>
+        </div>
+        <div class="popup-contents"> 
+            <a class="popup-close" data-popup-close="showSise" href="#">X</a> <!-- 팝업 닫기 버튼입니다 -->
+        </div>
+    </div> 
+</div>
+{% endblock %}

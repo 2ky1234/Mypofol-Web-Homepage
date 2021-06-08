@@ -1,0 +1,52 @@
+﻿{% extends 'FElab_app/base.html' %}
+
+{% block content %}
+<div class="header">
+    <div style="position:absolute;text-shadow: 1px 0.5px 0.5px gray;font-family: 'Nanum Gothic', sans-serif;width:100%;">
+        <div id='header_section' style='margin-top:60px;display:flex;justify-content: center;flex-direction: column;text-align: center;color:white'>
+            <h3>자산배분 기법을 활용한 투자분석 프로그램</h3>
+            <p style="color:lightgrey">경희대학교 산업경영공학과 금융공학 연구실 학부연구팀 개발</p>
+        </div>
+    </div>
+</div>
+<section class='content'>
+    <div class='wrap'>
+        <section class='portfolio_optimize'>
+            <article class='main' style='overflow:hidden;'>
+                <h2 class="topicTitle">포트폴리오 최적화</h2>
+                <p style='color:#cccccc;'>내가 투자하고 있는 자산들로 최적의 포트폴리오를 구성해보세요.</p>
+                <div id='first_section' onclick="location.href='/portfolio_optimize'">
+                    <a href="/portfolio_optimize">바로가기</a>
+                </div>
+            </article>
+        </section>
+    </div>
+</section>
+<section class='content'>
+    <div class='wrap'>
+        <section class='portfolio_optimize'>
+            <article class='main' style='overflow:hidden;text-align: right;'>
+                <h2 class="topicTitle">포트폴리오 백테스트</h2>
+                <p style='color:#cccccc;'>내 자산들 혹은 투자하고 싶은 자산들의 과거 기간동안 성과를 확인해보세요</p>
+                <div id='second_section' onclick="location.href='/portfolio_backtest'">
+                    <a style='color:#FA8800' href="/portfolio_backtest">바로가기</a>
+                </div>
+            </article>
+        </section>
+        
+    </div>
+</section>
+<section class='content'>
+    <div class='wrap'>
+        <section class='portfolio_optimize'>
+            <article class='main' style='overflow:hidden;'>
+                <h2 class="topicTitle">금융 데이터 머신러닝</h2>
+                <p style='color:#cccccc;'>시장과 기업에 관련된 뉴스 정보를 수집하고 분석한 정보를 확인해보세요</p>
+                <div id='third_section' onclick="location.href='/textmining'">
+                    <a style='color:#831919' href="/textmining">바로가기</a>
+                </div>
+            </article>
+        </section>
+    </div>
+</section>
+{% endblock %}

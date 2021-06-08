@@ -1,0 +1,220 @@
+{% extends 'FElab_app/base.html' %}
+
+{% block content %}
+{% load static %}
+<head>
+    <script type='text/javascript' src="{% static '/js/textmining.js' %}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqcloud/1.0.4/jqcloud.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqcloud/1.0.4/jqcloud-1.0.4.js"></script>
+</head>
+<div class='h_container'>
+    <div class="h_container__title">
+        <span style='font-size: 40px;color:#06c;'>텍스트마이닝</span>은 비정형 데이터 및 반정형 데이터에 대하여 자연어 처리 기술과 문서 처리 기술을 적용하여 유용한 정보를 추출, 가공하는 목적으로 하는 기술입니다.
+    </div>
+</div>
+<div class='b_container'>
+    <section class='b_container__content' style='box-shadow: 1px 1px 3px 1px #dadce0;'>
+        <div class='b_container__content_header' style='margin-top:0;background-color: #191f28;color:white;'>
+            <div style='display: flex;justify-content: center;'>
+                <div class='category_container'>
+                    <div><img src='/static/images/learning.png' class='category_icon'></div>
+                    <a class="category clicked">시장 분석</a><br>
+                    <span class='category_comment'>네이버 뉴스 API에서 수집한 뉴스 데이터의 텍스트를 분석하여 의미있는 정보를 찾아냅니다.</span>
+                </div>
+                <div class='category_container'>
+                    <div><img src='/static/images/growth.png' class='category_icon'></div>
+                    <a class="category">기업 분석</a><br>
+                    <span class='category_comment'>기업의 주가에 영향을 미치는 변수를 분석하고 뉴스 정보를 수집합니다.</span>
+                </div>
+                <div class='category_container'>
+                    <div><img src='/static/images/presentation.png' class='category_icon'></div>
+                    <a class="category">금융데이터 분석</a><br>
+                    <span class='category_comment'>거시 경제 지표 및 인덱스, 비트코인 시세를 수집하여 분석합니다.</span>
+                </div>
+            </div>
+        </div>
+        <div class="b_container__content_body">
+            <div class='analysis_section' id='market_analysis'>
+                <h3 style='text-align: center;padding: 0 50px 10px 50px;margin:20px;color:#454F5D;'>뉴스 검색</h3>
+                <div style='height:40px;display: flex;justify-content: center;'>
+                    <input id="comboBox" style='text-align:right;background-color: #eeeeee;width:50%;height:100%;' />
+                    <button id="search_btn" class='blue_btn' style="width:100px;">검색하기</button>
+                    <button id='market_analysis_btn' class='white_btn' style='width:100px'>분석하기</button>
+                </div>
+                <div>
+                    <div style='margin-top:10px;'>
+                        <span>키워드 추천</span>
+                        <input type='button' class="recmd_btn" id='first_recmd' value='증시'/>
+                        <input type='button' class="recmd_btn" id='second_recmd' value='경제'/>
+                        <input type='button' class="recmd_btn" id='third_recmd' value='금융'/>
+                    </div>
+                </div>
+                <div style='text-align: right;padding:20px 20px;font:italic bold;'>
+                    <span>네이버 뉴스 API</span:>
+                    <span style='text-align: right;margin: 50px 0;' class="now_date"></span><br>
+                    <span style='font-size: 13px;color:#cccccc'>최대 100건 수집이 가능합니다.</span>
+                </div>
+                <div class='news_wrap' style="margin:10px 20px;font-size:15px;height:350px;overflow-y: auto;overflow-x: hidden;">
+                    <div id="news_board"></div>
+                </div>
+            </div>
+            <div class='analysis_section' id='company_analysis' style='height:300px;'>
+                <h3 style='text-align: center;padding: 0 50px 10px 50px;margin:20px;color:#454F5D;'>기업 검색</h3>
+                <div style='height:40px;'>
+                    <input id="comboBox2" style='text-align:right;background-color: #eeeeee;width:50%;height:100%;border:none;' />
+                    <button id='company_analysis_btn' class='blue_btn' style='width:100px'>분석하기</button>
+                </div>
+                <div>
+                    <div id='myasset' style='width:50%;margin-top:10px;margin-left:70px;'>
+                        <span>보유 종목</span>
+                    </div>
+                </div>
+            </div>
+            <div class='analysis_section' id='macro_analysis' style='height:auto;'>
+                <section class='content' style='margin:50px 40px;'>
+                    <h2 class="topicTitle">금융 데이터 과거 추이</h2>
+                    <span>2017년부터 현재까지 금융 데이터를 수집하여 분석하였습니다.</span><br>
+                </section>
+                <div style='display: flex;height:300px;'>
+                    <div class = "horizon horizon-prev" style='width:50px;height:50px;margin-top:100px;'>
+                        <img src='/static/images/next.png' id='left_img' style='width:100%;height:100%;'>
+                    </div>
+                    <div class="center" id='content'>
+                        <div class='internal'><canvas class='macro_graph' id='macro_graph1'></canvas></div>
+                        <div class='internal'><canvas class='macro_graph' id='macro_graph2'></canvas></div>
+                        <div class='internal'><canvas class='macro_graph' id='macro_graph3'></canvas></div>
+                        <div class='internal'><canvas class='macro_graph' id='macro_graph4'></canvas></div>
+                        <div class='internal'><canvas class='macro_graph' id='macro_graph5'></canvas></div>
+                    </div>
+                    <div class ="horizon horizon-next" style='width:50px;height:50px;margin-top:100px;'>
+                        <img src='/static/images/next.png' style='width:100%;height:100%;'>
+                    </div>
+                </div>
+                <section class='content' style='margin:50px 40px;border:none;'>
+                    <h2 class="topicTitle">지난 7거래일 데이터</h2>
+                    <span class="now_date" style='height:40px;'></span><br>
+                </section>
+                <div class="macro_table" >
+                    <table class='table backtest_table' style='font-size: 0.9rem'>
+                        <thead>
+                            <tr style="border-top-style:hidden;">
+                                <th class='numberCell'>날짜</th>
+                                <th class='numberCell'>국제 금가격<br><span class='deg'> 단위: 달러</span></th>
+                                <th class='numberCell'>국제 은가격<br><span class='deg'> 단위: 달러</span></th>
+                                <th class='numberCell'>WTI(원유)<br><span class='deg'> 단위: 달러</span></th>
+                                <th class='numberCell'>원달러 환율<br><span class='deg'> 단위: 원</span></th>
+                                <th class='numberCell'>원유로 환율<br><span class='deg'> 단위: 원</span></th>
+                                <th class='numberCell'>원위엔 환율<br><span class='deg'> 단위: 원</span></th>
+                                <th class='numberCell'>원엔 환율<br><span class='deg'> 단위: 원</span></th>
+                                <th class='numberCell'>국고채 10년물 금리<br><span class='deg'> 단위: %</span></th>
+                                <th class='numberCell'>미국고채 10년물 금리<br><span class='deg'> 단위: %</span></th>
+                                <th class='numberCell'>코스피</th>
+                                <th class='numberCell'>나스닥</th>
+                                <th class='numberCell'>S&P500</th>
+                                <th class='numberCell'>비트코인<br><span class='deg'> 단위: 원</span></th>
+                                <th class='numberCell'>이더리움<br><span class='deg'> 단위: 원</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id='asset_row'>
+                        </tbody>
+                    </table>
+                </div>
+                <div class='half_block' style='height:500px;'>
+                    <section class='content' style='margin:50px 40px;'>
+                        <h2 class="topicTitle">변수 영향도</h2>
+                        <span>지난 7일의 데이터를 분석하여 코스피 지수에 영향을 미치는 변수들의 영향도입니다. 큰 값을 가질수록 지난 한 주동안의 주가(코스피)는 그 변수의 영향을 많이 받았다는 뜻입니다.</span><br>
+                    </section>
+                    <div style='height:300px;'>
+                        <canvas id='imp_chart' height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="b_container__content_body bcgray">
+            <div class='analysis_section' id='market_analysis_result'>
+                <section class='content'>
+                    <h2 class="topicTitle">Wordcloud</h2>
+                    <span>실시간 수집된 뉴스 100건의 제목에서 추출한 단어 빈도 그래프입니다.</span><br>
+                </section>
+                <div class='analysis_result_container' style='margin-bottom: 100px;'>
+                    <div id='wordcloud_div'>
+                        <div id='wordcloud'></div>
+                    </div>
+                    <div id="sent_div">
+                        <div style='width:40%;'>
+                            <canvas id='sent_chart' width="100%",height="100%"></canvas>
+                        </div>
+                        <div style='padding:100px 10px 10px 10px;width:70%;'>
+                            <span id='sent_score'></span><br></br>
+                            <a href='https://github.com/FELAB-mkportfolio/felab_django' target="_blank">감성점수 산출 방법 보기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='analysis_section' id='company_analysis_result'>
+                <section class='content' style='margin:50px 40px;'>
+                    <h2 class="topicTitle" id='company_name'></h2>
+                    <span id='company_info'></span><br>
+                </section>
+                <div class='analysis_result_container' style='height: 500px;margin-bottom: 100px;'>
+                    <div id='stockchart_div'>
+                        <div class="contentsBox" style="cursor:default;border:none;">
+                            <div id="controls" style="width: 100%; overflow: hidden;">
+                                <div style="float: left; margin-left: 15px;">
+                                    From: <input type="text" id="fromfield" class="amcharts-input" />
+                                    To: <input type="text" id="tofield" class="amcharts-input" />
+                                </div>
+                                <div style="float: right; margin-right: 15px;">
+                                    <button id="b1m" class="amcharts-input">1m</button>
+                                    <button id="b3m" class="amcharts-input">3m</button>
+                                    <button id="b6m" class="amcharts-input">6m</button>
+                                    <button id="b1y" class="amcharts-input">1y</button>
+                                    <button id="bytd" class="amcharts-input">YTD</button>
+                                    <button id="bmax" class="amcharts-input">MAX</button>
+                                </div>
+                            </div>
+                            <div id="chartdiv"></div>
+                        </div>
+                    </div>
+                    <div id="company_news_board">
+                        <div>
+                            <h2 style='color:#007BFF; padding: 20px;'>뉴스 정보</h2>
+                        </div>
+                    </div>
+                </div>
+                <section class='content' style='margin:50px 40px;'>
+                    <h2 class="topicTitle">변수 중요도</h2>
+                    <span>최근 5년간의 거시경제지표 데이터를 수집하여 어떤 지표가 해당 기업의 주가에 영향을 많이 미치는지 분석한 결과입니다.</span><br>
+                    
+                </section>
+                <section class='content' style='margin:50px 40px;'>
+                    <div class="accuracy_table" >
+                        <table class='table backtest_table' style='font-size: 0.9rem'>
+                            <thead>
+                                <tr style="border-top-style:hidden;">
+                                    <th>Model</th>
+                                    <th class='numberCell'>MSE</th>
+                                    <th class='numberCell'>RMSE</th>
+                                    <th class='numberCell'>Rsquared</th>
+                                </tr>
+                            </thead>
+                            <tbody id='accuracy_row'>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <div class='analysis_result_container'>
+                    <div class='imp_chart_wrapper'>
+                        <h2 class='topicTitle'>Ada-Boost 모델</h2>
+                        <canvas class='imp_chart' id='imp_chart_ada' ></canvas>
+                    </div>
+                    <div class='imp_chart_wrapper'>
+                        <h2 class='topicTitle'>Random-Forest 모델</h2>
+                        <canvas class='imp_chart' id='imp_chart_rf'></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

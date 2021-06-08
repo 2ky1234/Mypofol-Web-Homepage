@@ -1,0 +1,7 @@
+*.ipynb
+
+*.ipynb_checkpoiints
+
+*.csv
+
+*.pyc

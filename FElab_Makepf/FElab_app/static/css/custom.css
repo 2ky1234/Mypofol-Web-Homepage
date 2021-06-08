@@ -1,0 +1,591 @@
+/* Default setting */
+    *{
+        margin:0px;
+        padding:0px;
+        box-sizing:border-box;
+    }
+    p{
+        font-size: 20px;
+    }
+@font-face {
+    font-family: 'AppleSDGothicNeoB';
+    src: local('AppleSDGothicNeoB'),
+         url('../fonts/AppleSDGothicNeoB.ttf') format("truetype");
+    font-family: 'AppleSDGothicNeoM';
+    src: local('AppleSDGothicNeoM'),
+        url('../fonts/AppleSDGothicNeoM.ttf') format("truetype");
+}
+    a{
+        cursor: pointer;
+    }
+    body {
+        z-index: 0;
+    }
+    .portfolio_table{
+        display:flex;justify-content: center; margin-top:30px; max-width: 100%;overflow-y: auto;overflow-x: hidden;
+    }
+    .bcgray{
+        background-color: #f9fafb;
+    }
+    .half_block{
+        width:50%;height:100%;
+    }
+    table {
+        border-collapse: collapse; border-spacing: 0;
+    }
+    tr >.numberCell{
+        text-align: center;
+    }
+    thead {
+        display: table-header-group; vertical-align: middle; border-color: inherit;
+    }
+    tr {
+        display: table-row; vertical-align: inherit; border-color: inherit; text-align: center;
+    }
+    /* 버튼 */
+    .blue_btn{
+        background-color: #00469d;border:none;color:white; height: 40px;
+    }
+    .orange_btn{
+        background-color:#FA8800;height:40px;bottom:0;border:none;color:white;
+    }
+    .white_btn{
+        background-color: white;height:40px; border: none;color:#00468d;
+    }
+    .main-nav {
+        list-style-type: none;display: none;
+    }
+    .nav-links, .logo {
+        text-decoration: none;color: black;
+    }
+    .main-nav li {
+        text-align: center;margin: 15px auto;font-size:20px;
+    }
+    .main-nav li a{
+        color:white;
+    }
+    #js-navbar-toggle{
+        width:30px;
+    }
+    input[class=amcharts-input]{
+        border:none; border-bottom: 1px solid #8C0000; margin: 5px 0;
+    }
+    button[class=amcharts-input]{
+        border-radius: 5px; width: 60px; border:none; margin: 5px 0; background-color: #E4FBFF
+    }
+    .popup{
+        display: none; 
+        position:fixed; 
+        width: 100%; 
+        height: 100%; 
+        top:0; 
+        z-index:10001;
+        left:0; 
+        background:rgba(0,0,0,0.5);
+    }
+    .popup-inner { /* 열렸을 때 팝업창 크기와 색상을 지정합니다. */ 
+        position:absolute; 
+        height:600px;
+        width:40%;
+        top:50%; 
+        left:50%; 
+        transform:translate(-50%, -50%); 
+        padding : 10px; background:#fff; 
+    }
+    .popup-close{ /* 팝업창 내 닫기 버튼의 위치를 지정합니다. */ 
+        position: absolute; 
+        display: block; 
+        top:10px; 
+        right: 10px; 
+    }
+    
+    .footer{
+        width: 100%;
+        height:100px;
+        background-color: #121013;
+    }
+
+    
+/*      */
+/* main 페이지의 header */
+.header {
+    height: 230px; width: 100%; background: url(/static/images/background.jpg); background-size: cover;   
+}
+.topicTitle{
+    font-size: 30px; font-weight: bold;
+}
+.topicBox {
+    text-align:center; margin: 50px;
+}
+.topicBox > p{
+    font-size: 15px;
+}
+.content .wrap section {
+    overflow: hidden; margin: 60px auto; padding: 0; padding-top:60px; box-sizing: border-box; max-width: 800px; margin-bottom: 120px;
+}
+#header_section{
+    border-bottom:2px solid #cccccc; text-align:right;  cursor:pointer;
+}
+#header_section:hover{
+    border-bottom : 2px solid white; transition: 2s ease;
+}
+#first_section{
+    border-bottom:2px solid #cccccc; text-align:right;  cursor:pointer;
+}
+#first_section:hover{
+    border-bottom : 2px solid #06c; transition: 2s ease;
+}
+#second_section{
+    border-bottom:2px solid #cccccc; text-align:left;  cursor:pointer;
+}
+#second_section:hover{
+    border-bottom : 2px solid #FA8800; transition: 2s ease;
+}
+#third_section{
+    border-bottom:2px solid #cccccc; text-align:right;  cursor:pointer;
+}
+#third_section:hover{
+    border-bottom : 2px solid #831919; transition: 2s ease;
+}
+section .content{
+    margin:50px 40px;
+}
+/*각 페이지의 개념 설명 header*/
+.h_container{
+    display:flex; justify-content:center; padding:40px; background-color: white; font-family: 'AppleSDGothicNeoM';
+}
+.highlight_text{
+    font-size: 35px;color:#06c;
+}
+.h_container__title{
+    width:80%; margin: 100px; text-align: center; font-size: 20px; 
+}
+/*각 페이지의 Body */
+.b_container{
+    background-color: white; font-family: 'AppleSDGothicNeoM';
+}
+.b_container__content_header{
+    width:100%;text-align: center; font-weight: 700; font-size: 32px; color: #191f28; line-height: 1.6; margin: 60px auto; padding-top:60px;  
+}
+.b_container__content_body{
+    width:100%;text-align: center;
+}
+/* 각 페이지의 content_section */
+.b_container__content{
+    box-sizing: border-box; width:100%; margin-bottom: 120px;
+}
+
+/*포폴 최적화 css */
+.lecture{
+    display: flex; justify-content: center; margin: 0 200px;
+}
+.lecture_comment{
+    text-align: left; padding: 50px;
+}
+select {
+    margin-bottom: 1em; padding: .25em; border: 0; border-bottom: 1px solid #eeeeee; letter-spacing: .15em; border-radius: 0;
+}
+.selectBox{
+    border:0px;
+}
+.searchBox{
+    margin: 0 20px;
+}
+#comboBox, #my_comboBox{
+    height:40px; border:1px solid #eeeeee;
+}
+.ui-datepicker{
+    z-index: 10002;
+}
+.ui-autocomplete {
+    max-height: 200px; overflow-y: auto; overflow-x: hidden; z-index: 10000; padding-right: 20px;
+} 
+.modal-mask{
+    position: fixed; z-index: 9998; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,.5); display: none;
+    -webkit-transition: opacity .3s ease;
+    transition: opacity .3s ease;
+}
+.modal-wrapper{
+    display: table-cell; vertical-align: middle; overflow:hidden;
+}
+.modal-container{ position: absolute; top: 50%; left: 50%;width: 100%;height: 100%;padding: 25px 20px;background-color: #fff;overflow-y: auto;z-index: 99;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.modal-header{
+    display: flex;
+    -ms-flex-align: start;
+    -webkit-box-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
+    justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid #e9ecef; border-top-left-radius: .3rem;border-top-right-radius: .3rem;
+}
+.modal-close{
+    position: absolute;top: 15px;right: 16px; padding: 0; width: 30px; height: 30px;color:black; background: none;border: 0;text-align: left;z-index: 100;
+}
+#save_portfolio_btn{
+    border-radius: 5px; width: 60px; background-color: #8C0000; height: 30px; bottom: 0; border: none; color: white;
+}
+.row-mypage{
+    width: 100%; display: flex; -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.row-mypage .form-label{
+    margin-bottom: 0;font-size: 16px;line-height: 50px;line-height: 3.125;font-weight: bold;
+}
+.modal-button{
+    display: flex;justify-content: center;
+}
+#optimize_btn{
+    background-color: #06c;color:white;border-radius: 0;
+
+}
+#register_pf, #add_asset_btn{
+    background-color: #00469d;width: 160px;color:white;border:none;height: 60px;font-size: 2rem;
+}
+@media (min-width: 768px){
+    .modal-container {
+        padding: 70px 45px;
+        width: 570px;
+        height: 90%;
+    }
+}
+/* 포폴 결과 */
+#tobacktest_btn{
+    background-color: white; width: 160px; color:#00469d; border:1px solid #cccccc; height: 60px;font-size: 2rem;
+}
+#my_assetsBox{
+    text-align:center; height:230px; overflow-y: auto; overflow-x: hidden;
+}
+#chartdiv {
+    width: 100%; height: 500px; max-width: 100%;
+}
+#controls {
+    overflow: hidden; padding-bottom: 3px;
+}
+#my_from, #my_to{
+    width: 100px; height: 30px;
+}
+#add_block{
+    display:none;
+}
+.optimize_result{
+    display: flex; margin:50px 20px; height:500px; justify-content: center; font-family: 'AppleSDGothicNeoM';
+}
+.portfolio_pie{
+    height:300px; width:300px; margin: 0px auto;
+}
+#portfolio_pie_chart{
+    height: 200;
+}
+.portfolio_optimize{
+    width:60%; margin:40px auto;
+}
+.strategy_container{
+    width:100%;
+    display: flex;
+    margin:20px;
+    border-top:1px solid #cccccc;
+    flex-direction: column;
+}
+.strategy_title{
+    width:100%;
+    text-align: left;
+}
+.strategy_comment{
+    width:100%;
+    text-align: left;
+}
+#button_container{
+    display:flex;
+    justify-content: center;
+    height:200px;
+    margin: 50px;
+}
+#ef_graph{
+    width:70%;margin: 0 0 0 100px;
+}
+#ef_comment{
+    width:40%;margin: 0 100px 0 0;
+}
+.left_block{
+    width:40%;margin: 0 0 0 100px;
+}
+.right_block{
+    width:70%;margin: 0 100px 0 0;
+}
+/*백테스트 css */
+#backtest_inputdiv{
+    margin: 100px 200px;height:600px; background-color: white; border-radius: 5px;display: flex;
+}
+#backtest_inputdiv_left{
+    border-right:1px solid #cccccc;
+}
+#backtest_inputdiv_right{
+    text-align: center; padding-top:30px;
+}
+#backtest_outputdiv{
+    display: none;
+}
+.backtest_step{
+    position:relative; background-color: white; font-family: 'AppleSDGothicNeoM';
+}
+#backtest_btn{
+    width:40%;height:60px;border:none;
+}
+#backtest_portfolio_table{
+    width:80%;
+}
+.backtest_input_row{
+    margin: 20px 0; text-align: center; 
+}
+.backtest_graph_container{
+    height:600px;
+    margin-bottom:50px;
+    justify-content:center;
+    display:flex;
+}
+.backtest_graph_block{
+    width: 50%;
+    height: 100%;
+}
+.backtest_graph_comment{
+    height:70px;
+}
+.backtest_chart{
+    width:100%;
+    height:70%;
+}
+.input_date, .input_amount{
+    width:100px; border:none; border-bottom: 2px solid #06c;
+}
+/* 텍스트마이닝 */
+.category_container{
+    width: 33.33%; height:250px; display:block; float:left; padding: 0 16px; text-align: center; border-radius: 10px ;margin:0 20px;
+}
+.category_icon{
+    height:50px; width:50px; border-radius: 25px;
+}
+.category{
+    margin: 30px 20px 30px 20px; color: #cccccc; font-size: 30px;
+}
+.category_comment{
+    font-weight: 10;font-size:20px;
+}
+.analysis_section{
+    overflow-y: hidden; display:none; 
+}
+.analysis_result_container{
+    display: flex;justify-content: center;height:350px;
+}
+#wordcloud_div{
+    max-width:700px; background-color: white; padding: 10px; margin-right: 20px; overflow-y:auto; overflow-x:hidden;
+}
+#wordcloud{
+    width: 650px;height:500px;;
+}
+#stockchart_div{
+    max-width:700px; height:500px; background-color: white; padding: 10px; margin-right: 20px; overflow-y:auto; overflow-x:hidden;
+}
+#company_news_board{
+    max-width:400px; height:500px; background-color: #191f28; font-weight: 500;  overflow-y:auto; overflow-x:hidden;
+}
+#company_news_board a{
+    color:white;
+}
+.macro_table, .accuracy_table{
+    margin: 0 50px;overflow-y: auto;overflow-x: hidden;
+}
+#sent_div{
+    max-width:400px; height:300px; background-color: #191f28; font-weight: 500;  overflow-y:auto; overflow-x:hidden; display: flex; color:white;
+}
+.recmd_btn{
+    width:50px;border-radius: 10px; background-color: #00469d; color: white; font-size:15px; font-family: 'Gothic'; border:none;
+}
+.myasset_btn{
+    width:auto;margin:0 5px;border-radius: 10px; color: #00469d; font-size:15px; font-family: 'Gothic'; border:none;background-color: #f9fafb;
+}
+.clicked{
+    color: #007bff;
+}
+.news{
+    color: #626262;
+}
+.active {
+    display: block;
+}
+span.deg{
+    font-size:10px;
+}
+div.center{
+    width:100%; margin-bottom:50px; margin-left: 50px; height:300px; overflow-x: hidden; overflow-y: hidden; white-space: nowrap;
+}
+div.internal {
+    display: inline-block; vertical-align: middle; width: 30%; height:100%;text-align: center;
+}
+canvas .macro_graph{
+    height: 100%;
+}
+#left_img {
+    transform:rotate(90deg); -moz-transform: scaleX(-1);  -o-transform: scaleX(-1);  -webkit-transform: scaleX(-1);  transform: scaleX(-1);   
+    filter: FlipH; -ms-filter: "FlipH";
+}
+#variable_importance{
+    display:flex;
+}
+.imp_chart{
+    height:100;
+    width:100;
+}
+.imp_chart_wrapper{
+    height:300px;
+    width:50%;
+}
+
+/* 모바일 css (iphone X)  */
+@media screen and (min-width:375px)and (max-width : 1024px){
+    .content .wrap section{
+        margin: 60px;
+    }
+    .topicTitle{
+        font-size:15px;
+    }
+    p{
+        font-size: 10px;
+    }
+    #header_section{
+        margin: 60px;
+    }
+    .h_container{
+        padding:10px;
+    }
+    .h_container__title{
+        font-size: 15px; margin:70px 5px;
+    }
+    .highlight_text {
+        font-size: 20px;
+    }
+    .lecture{
+        margin:10px;
+    }
+    .lecture_image{
+        height: 200px;
+        width:200px;
+    }
+    .lecture_comment{
+        padding: 5px;
+    }
+    .portfolio_pie{
+        height: 200px;
+        width:200px;
+    }
+    #portfolio_pie_chart{
+        height:50vh;
+    }
+    .portfolio_optimize{
+        margin: 10px auto;
+    }
+    .optimize_result{
+        display: block;
+        height: auto;
+    }
+    #ef_graph{
+        width:100%;margin: 10px;
+    }
+    #ef_comment{
+        width:100%;margin: 10px;
+    }
+    .strategy_container{
+        margin: 5px;
+    }
+    .strategy_title{
+        font-size: 15px;
+    }
+    .strategy_comment{
+        font-size: 10px;
+    }
+    h3{
+        font-size:15px;
+    }
+    #add_asset_btn{
+        width: 100px;
+        font-size: 15px;
+    }
+    #tobacktest_btn{
+        width:100px;
+        font-size: 15px;
+    }
+    .content .wrap section{
+        padding-top:0;
+    }
+    .left_block{
+        width:100%;margin: 10px;
+    }
+    .right_block{
+        width:100%;margin: 10px;
+    }
+    .half_block{
+        width:100%;
+    }
+    .b_container__content_header{
+        font-size: 15px;
+    }
+    #backtest_inputdiv{
+        margin: 0;
+        display: block;
+        height:auto;
+    }
+    .b_container__content{
+        margin-bottom: 40px;
+    }
+    .backtest_graph_block{
+        width:100%;
+    }
+    .backtest_graph_container{
+        height:300px;
+    }
+    .category{
+        font-size:15px;
+        margin:0;
+    }
+    .category_comment{
+        font-size:10px;
+    }
+    .category_container{
+        padding:0;
+        margin:0;
+    }
+    #wordcloud_div{
+        width: 100%;
+        margin:0;
+    }
+    #wordcloud{
+        width:375px;
+    }
+    .analysis_result_container{
+        display: block;
+        height: auto;
+    }
+    div.internal {
+        width: 100%;
+    }
+    .macro_table,.accuracy_table{
+        overflow-x: auto;
+    }
+    #stockchart_div{
+        height:250px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    #company_news_board{
+        height:250px;
+    }
+    .imp_chart_wrapper{
+        width:100%;
+    }
+}

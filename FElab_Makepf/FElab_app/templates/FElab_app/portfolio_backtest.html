@@ -1,0 +1,243 @@
+{% extends 'FElab_app/base.html' %}
+
+{% block content %}
+{% load static %}
+<head>
+    <script type='text/javascript' src="{% static 'js/portfolio_backtest.js' %}"></script>
+</head>
+
+<div class='h_container'>
+    <div class="h_container__title">
+        <span style='font-size: 40px;color:#06c;'>백테스트</span>는 과거로 돌아가서 특정 투자전략을 사용했다면 어느 정도의 수익률을 벌 수 있었을지 시뮬레이션 돌려보는 과정을 뜻합니다. 예를 들어 10년 동안 A 주식와 B 주식을 10주씩 샀다면 지금쯤 수익률은 어떨까? 하는 궁금증을 해결할 수 있습니다.
+    </div>
+</div>
+
+<div class='b_container'>
+    <section class='b_container__content bcgray'>
+        <div class='b_container__content_header'>
+            <h2 class='topicTitle'>나의 포트폴리오 비중대로 자산에 투자했다면 성과가 어땠을지, 어느정도의 리스크까지 감수할 수 있었는지 확인해보세요. </h2>
+        </div>
+        <div class="b_container__content_body">
+            <div id='backtest_inputdiv'>
+                <div class='half_block' id='backtest_inputdiv_left'>
+                    <input class='bcgray' id="comboBox" onfocus="if(this.value == '종목 검색') { this.value = ''; }" value="종목 검색" style='width:200px;margin-top: 50px;' />
+                    <button id="putin_btn" class='orange_btn' style="width:90px;">담기</button>
+                    <div class="portfolio_pie" style="height: 250px; width:70%; margin:0 auto;">
+                        <canvas id="portfolio_pie_chart"></canvas>
+                    </div>
+                    <div class='portfolio_table' style='height: 200px;'>
+                        <table class='table backtest_table' id='backtest_portfolio_table'>
+                            <thead>
+                                <tr>
+                                    <th class='numberCell'>자산</th>
+                                    <th class='numberCell'>비중</th>
+                                    <th class='numberCell'></th>
+                                </tr>
+                            </thead>
+                            <tbody id='asset_row'>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class='half_block' id='backtest_inputdiv_right'>
+                    <div class='backtest_input_row' >
+                        <div class='backtest_input_row_title'>
+                            <label for="from" style='font-size:20px;'>투자 기간을 입력해 주세요</label>
+                        </div>
+                        <div>
+                            From:  <input type="text" class="input_date" id="from" name="from" autocomplete="off" style='width:200px;height:40px;'/>
+                        </div>
+                        <div>
+                            To  :  <input type="text" class="input_date" id="to" name="to" autocomplete="off"style='width:200px;height:40px;' />
+                        </div>
+                    </div>
+                    <div class='backtest_input_row'>
+                        <div class='backtest_input_row_title'>
+                            <label style='font-size:20px;'>리밸런싱 주기와 최적화 전략을 입력해 주세요</label><br>
+                            <span>리밸런싱은 정해진 주기마다 포트폴리오를 재구성하는 것을 의미합니다.</span>
+                        </div>
+                        <div style='display:flex;justify-content: center;'>
+                            <select id='rebalancing_month' style='border-bottom: 2px solid #cccccc;width:200px;'>
+                                <option value='1'>1개월</option>
+                                <option value='2'>2개월</option>
+                                <option value='3'>3개월</option>
+                                <option value='4'>4개월</option>
+                                <option value='5'>5개월</option>
+                                <option value='6'>6개월</option>
+                                <option value='7'>7개월</option>
+                                <option value='8'>8개월</option>
+                                <option value='9'>9개월</option>
+                                <option value='10'>10개월</option>
+                                <option value='11'>11개월</option>
+                                <option value='12'>12개월</option>
+                            </select>
+                            <select id='rebalancing_option' style='border-bottom: 2px solid #cccccc;width:200px;'>
+                                <option value='basic'>선택한 비중을 유지합니다.</option>
+                                <option value='gmv'>Global Maximum Variance</option>
+                                <option value='ms'>Maximum Sharpe</option>
+                                <option value='rp'>Risk Parity</option>
+                            </select>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class='backtest_input_row'>
+                        <div class='backtest_input_row_title'>
+                            <label style='font-size:20px;'>투자 금액을 입력해 주세요</label>
+                        </div>
+                        <div>
+                            <input type='number' class='input_amount' id='start_amount' style='width:200px;height:40px;text-align: center;' value="1000000"/>원
+                        </div>
+                    </div>
+                    <div class='backtest_input_row'>
+                        <div class='backtest_input_row_title'>
+                            <label style='font-size:20px;'>수익률 산출 주기</label>
+                        </div>
+                        <div>
+                            <label style='font-size:20px;'>월 별 <input type='radio' name='interval' value='monthly' checked></label>
+                            <label style='font-size:20px;'>주 별 <input type='radio' name='interval' value='weekly'></label>
+                            <label style='font-size:20px;'>일 별 <input type='radio' name='interval' value='daily'></label>
+                        </div>
+                    </div>
+                    <div class='backtest_input_row'>
+                        <button class='blue_btn' id='backtest_btn'>백테스트 시작</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class='b_container__content' id='backtest_outputdiv'>
+        <div class='b_container__content_header' style='padding-top:0;'>
+            <h2>백테스트 결과</h2><span style='font-size:20px;'>투자 기간</span><span id='daterange' style='font-size:20px;'></span>
+        </div>
+        <div class='b_container__content_body'>
+            <div class="backtest_graph_container">
+                <div class='backtest_graph_block'>
+                    <div class='backtest_graph_title'>
+                        <h2>Indicators</h2>
+                    </div>
+                    <div class='backtest_graph_comment'>
+                        <span>
+                            내 포트폴리오가 코스피와 미국 대표 인덱스 S&P500에 비해 성과가 어땠는지 확인해보세요
+                        </span>
+                    </div>
+                    <div class='backtest_graph_field'>
+                        <table class='table backtest_table'>
+                            <thead>
+                                <tr>
+                                    <th style='text-align: center;'>성과 지표</th>
+                                    <th class='numberCell'>연평균 수익률</th>
+                                    <th class='numberCell'>변동성:표준편차</th>
+                                    <th class='numberCell'>샤프지수</th>
+                                    <th class='numberCell'>VaR</th>
+                                    <th class='numberCell'>MDD</th>
+    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>내 포트폴리오</td>
+                                    <td class="numberCell" id="mean_return"></td>
+                                    <td class="numberCell" id="std"></td>
+                                    <td class="numberCell" id="sharp"></td>
+                                    <td class="numberCell" id="VaR"></td>
+                                    <td class="numberCell" id="MDD"></td>
+                                </tr>
+                                <tr>
+                                    <td>코스피</td>
+                                    <td class="numberCell" id="KP_mean_return"></td>
+                                    <td class="numberCell" id="KP_std"></td>
+                                    <td class="numberCell" id="KP_sharp"></td>
+                                    <td class="numberCell" id="KP_VaR"></td>
+                                    <td class="numberCell" id="KP_MDD"></td>
+                                </tr>
+                                <tr>
+                                    <td>S&P500</td>
+                                    <td class="numberCell" id="SP_mean_return"></td>
+                                    <td class="numberCell" id="SP_std"></td>
+                                    <td class="numberCell" id="SP_sharp"></td>
+                                    <td class="numberCell" id="SP_VaR"></td>
+                                    <td class="numberCell" id="SP_MDD"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="backtest_graph_container">
+                <div class='backtest_graph_block'>
+                    <div class='backtest_graph_title'>
+                        <h2>Value Chart</h2>
+                    </div>
+                    <div class='backtest_graph_comment'>
+                        <span>
+                            입력한 투자 금액 만큼 설정하신 포트폴리오에 투자하면 투자 기간 동안 그 가치가 어떻게 변하는지 확인할 수 있는 그래프입니다. 
+                        </span>
+                    </div>
+                    <div class='backtest_graph_field'>
+                        <canvas id='value_chart' class='backtest_chart'></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="backtest_graph_container">
+                <div class='backtest_graph_block'>
+                    <div class='backtest_graph_title'>
+                        <h2>DrawDown Chart</h2>
+                    </div>
+                    <div class='backtest_graph_comment'>
+                        <span>
+                            DrawDown은 투자 기간 동안 포트폴리오가 고점에서 저점까지 떨어진 비율을 의미합니다. 즉, 수익률에 초점을 두는 것이 아니라 얼만큼 내 포트폴리오의 수익률이 떨어지는지 확인할 수 있는 지표입니다.
+                            깊게 떨어지면 떨어질수록 리스크에 취약하다는 뜻이기도 합니다.
+                        </span>
+                    </div>
+                    <div class='backtest_graph_field'>
+                        <canvas id='MDD_chart' class='backtest_chart'></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="backtest_graph_container">
+                <div class='backtest_graph_block'>
+                    <div class='backtest_graph_title'>
+                        <h2>Return Chart</h2>
+                    </div>
+                    <div class='backtest_graph_comment'>
+                        <span>
+                            수익률 변동 추이를 확인할 수 있는 그래프 입니다.
+                        </span>
+                    </div>
+                    <div class='backtest_graph_field'>
+                        <canvas id='Return_chart' class='backtest_chart'></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+            
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<div class="popup" data-popup="showSise"> <!-- 표출되는 팝업 입니다. --> 
+    <div class="popup-inner"> 
+        <div class="contentsBox" style="height: 500px;cursor:default;border:none;">
+            <div id="controls" style="width: 100%; overflow: hidden;">
+                <div style="float: left; margin-left: 15px;">
+                    From: <input type="text" id="fromfield" class="amcharts-input" />
+                    To: <input type="text" id="tofield" class="amcharts-input" />
+                </div>
+                <div style="float: right; margin-right: 15px;">
+                    <button id="b1m" class="amcharts-input">1m</button>
+                    <button id="b3m" class="amcharts-input">3m</button>
+                    <button id="b6m" class="amcharts-input">6m</button>
+                    <button id="b1y" class="amcharts-input">1y</button>
+                    <button id="bytd" class="amcharts-input">YTD</button>
+                    <button id="bmax" class="amcharts-input">MAX</button>
+                </div>
+            </div>
+            <div id="chartdiv"></div>
+        </div>
+        <div class="popup-contents"> 
+            <a class="popup-close" data-popup-close="showSise" href="#">X</a> <!-- 팝업 닫기 버튼입니다 -->
+        </div>
+    </div> 
+</div>
+{% endblock %}
+
